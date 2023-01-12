@@ -53,7 +53,7 @@
           "properties": {
             "title": "{{ place.title }}",
             "placeId": "{{ place.placeId }}",
-            "detailsUrl": "/static/places/{{ place.placeId }}.json"
+            "detailsUrl": "{% url 'place-detail' place.id %}"
           }
         {% if forloop.last %}}{% else %}},{% endif %}
         {% endfor %}
