@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.safestring import mark_safe
 
 
 class Place(models.Model):
@@ -28,6 +29,14 @@ class Image(models.Model):
         Place, on_delete=models.CASCADE, verbose_name='Локация'
     )
     file = models.ImageField(verbose_name='Файл')
+
+    def get_preview(self):
+        result = mark_safe(
+            f'<img src="{self.file.url}" height="150">'
+        )
+        return result
+
+    get_preview.short_description = 'Предпросмотр'
 
     def __str__(self):
         return f'{self.place.title} ({self.file})'
