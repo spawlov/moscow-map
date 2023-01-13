@@ -8,14 +8,10 @@ class PlaceInline(admin.TabularInline):
     model = Image
     readonly_fields = ('get_preview',)
     fk_name = 'place'
-    extra = 3
+    extra = 1
 
     def get_preview(self, obj):
-        result = mark_safe(
-            f'<img src="{obj.file.url}" height="200">'
-        )
-        return result
-
+        return mark_safe(f'<img src="{obj.file.url}" height="200">')
     get_preview.short_description = 'Предпросмотр'
 
 
@@ -28,4 +24,3 @@ class PlaceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Place, PlaceAdmin)
-admin.site.register(Image)
