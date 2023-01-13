@@ -1,6 +1,4 @@
-from django.core.validators import MinValueValidator
 from django.db import models
-from django.utils.safestring import mark_safe
 
 
 class Place(models.Model):
@@ -35,11 +33,3 @@ class Image(models.Model):
 
     def __str__(self):
         return f'{self.place.title} ({self.file})'
-
-    def get_preview(self):
-        result = mark_safe(
-            f'<img src="{self.file.url}" height="200">'
-        )
-        return result
-
-    get_preview.short_description = 'Предпросмотр'
