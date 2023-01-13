@@ -3,4 +3,5 @@ venv/
 /media/
 .env
 db.sqlite3
-/static/places/
+/places/assets/places/
+/static/
