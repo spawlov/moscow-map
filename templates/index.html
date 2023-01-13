@@ -52,7 +52,7 @@
           },
           "properties": {
             "title": "{{ place.title }}",
-            "placeId": "{{ place.placeId }}",
+            "placeId": "{{ place.id }}",
             "detailsUrl": "{% url 'place-detail' place.id %}"
           }
         {% if forloop.last %}}{% else %}},{% endif %}
