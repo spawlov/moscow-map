@@ -1,3 +1,5 @@
+from django_ckeditor_5.fields import CKEditor5Field
+
 from django.db import models
 
 
@@ -6,8 +8,9 @@ class Place(models.Model):
     description_short = models.TextField(
         blank=True, null=True, verbose_name='Краткое описание',
     )
-    description_long = models.TextField(
-        blank=True, null=True, verbose_name='Полное описание',
+    description_long = CKEditor5Field(
+        config_name='extends', blank=True, null=True,
+        verbose_name='Полное описание',
     )
     lng = models.FloatField(verbose_name='Долгота')
     lat = models.FloatField(verbose_name='Широта')

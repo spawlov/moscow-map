@@ -29,6 +29,7 @@ urlpatterns = [
     path('', include('places.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
