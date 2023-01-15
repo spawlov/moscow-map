@@ -247,3 +247,5 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+SESSION_COOKIE_SECURE = True
