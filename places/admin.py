@@ -1,21 +1,24 @@
+from adminsortable2.admin import SortableTabularInline, SortableAdminBase
+
 from django.contrib import admin
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 from .models import Place, Image
 
 
-class PlaceInline(admin.TabularInline):
+class PlaceInline(SortableTabularInline):
     model = Image
-    readonly_fields = ('get_preview',)
+    fields = ['file', 'get_preview']
+    readonly_fields = ['get_preview']
     fk_name = 'place'
     extra = 1
 
     def get_preview(self, obj):
-        return mark_safe(f'<img src="{obj.file.url}" height="200">')
+        return format_html(f'<img src="{obj.file.url}" height="200">')
     get_preview.short_description = 'Предпросмотр'
 
 
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     model = Place
     ordering = ('pk',)
     list_display = ('id', 'title',)

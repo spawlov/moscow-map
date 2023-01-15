@@ -26,10 +26,14 @@ class Image(models.Model):
         on_delete=models.CASCADE, verbose_name='Локация',
     )
     file = models.ImageField(verbose_name='Файл')
+    position = models.PositiveIntegerField(
+        default=0, blank=False, null=False, verbose_name='Позиция',
+    )
 
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения'
+        ordering = ['position']
 
     def __str__(self):
         return f'{self.place.title} ({self.file})'
