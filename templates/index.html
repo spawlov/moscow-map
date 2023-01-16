@@ -150,7 +150,7 @@
       position: 'bottomleft',
       content: `
         <label>
-            <input name="debug" type="checkbox" ${log.getLevel()<=1 && 'checked'}/>
+            <input name="debug" type="hidden" ${log.getLevel()<=1 && 'checked'}/>
             Отладка
         </label>`,
       style: {
