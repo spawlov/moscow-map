@@ -1,5 +1,4 @@
 import shutil
-
 import requests
 
 from django.core.management import BaseCommand
