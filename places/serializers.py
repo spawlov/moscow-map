@@ -2,25 +2,24 @@ from abc import ABC
 
 from rest_framework import serializers
 
-from MoscowMap.settings import MEDIA_URL
 from .models import Place
 
 
 class CordSerializer(serializers.BaseSerializer, ABC):
-
+    """Serializer coordinates for to places"""
     def to_representation(self, value):
         return {'lng': value.lng, 'lat': value.lat}
 
 
 class ImageSerializer(serializers.BaseSerializer, ABC):
-
+    """Serializer list of images for to places"""
     def to_representation(self, value):
-        return f'{MEDIA_URL}{str(value.file)}'
+        return f'{str(value.file.url)}'
 
 
 class PlaceSerializer(serializers.ModelSerializer):
     coordinates = CordSerializer(source='*')
-    imgs = ImageSerializer(source='img_place', many=True)
+    imgs = ImageSerializer(source='img_places', many=True)
 
     class Meta:
         model = Place

@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
+from environs import Env
 
-load_dotenv(find_dotenv())
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,12 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
+# ALLOWED_HOSTS = []  # [os.getenv('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = []  # [env.list('ALLOWED_HOSTS')]
 
 # Application definition
 
@@ -136,6 +138,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# DRF
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -146,7 +150,9 @@ REST_FRAMEWORK = {
     ],
 }
 
-customColorPalette = [
+# CKEditor Config
+
+CKEDITOR_5_CUSTOM_PALETTE = [
     {
         'color': 'hsl(4, 90%, 58%)',
         'label': 'Red'
@@ -218,12 +224,12 @@ CKEDITOR_5_CONFIGS = {
                 'tableProperties', 'tableCellProperties'
             ],
             'tableProperties': {
-                'borderColors': customColorPalette,
-                'backgroundColors': customColorPalette
+                'borderColors': CKEDITOR_5_CUSTOM_PALETTE,
+                'backgroundColors': CKEDITOR_5_CUSTOM_PALETTE
             },
             'tableCellProperties': {
-                'borderColors': customColorPalette,
-                'backgroundColors': customColorPalette
+                'borderColors': CKEDITOR_5_CUSTOM_PALETTE,
+                'backgroundColors': CKEDITOR_5_CUSTOM_PALETTE
             }
         },
         'heading': {
@@ -248,9 +254,12 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 3600
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# For product constants
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True

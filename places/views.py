@@ -12,5 +12,5 @@ class MapPage(generic.ListView):
 
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Place.objects.prefetch_related('img_place').all()
+    queryset = Place.objects.all()
     serializer_class = PlaceSerializer
