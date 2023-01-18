@@ -30,8 +30,9 @@ SECRET_KEY = env.str('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG')
 
-# ALLOWED_HOSTS = []  # [os.getenv('ALLOWED_HOSTS')]
-ALLOWED_HOSTS = []  # [env.list('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = env.list(
+    'ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '[::1]']
+)
 
 # Application definition
 
@@ -254,7 +255,7 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-# For product constants
+# For production constants
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
