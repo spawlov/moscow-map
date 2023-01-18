@@ -1,9 +1,3 @@
-import json
-
-from django.core import serializers
-from django.http import JsonResponse
-from icecream import ic
-
 from django.views import generic
 from rest_framework import viewsets
 
