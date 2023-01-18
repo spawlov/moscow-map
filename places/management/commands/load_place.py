@@ -43,7 +43,8 @@ class Command(BaseCommand):
                         # Saving files
                         for image in resp_json.get('imgs'):
                             file = requests.get(image, stream=True)
-                            file_path = f"media/{str(image).split('/')[-1]}"
+                            file_path = f'{settings.MEDIA_ROOT}/' \
+                                        f'{str(image).split("/")[-1]}'
                             with open(file_path, 'wb') as f:
                                 file.raw.decode_content = True
                                 shutil.copyfileobj(file.raw, f)
@@ -55,15 +56,15 @@ class Command(BaseCommand):
                                 logger.warning('This record(s) already exists')
                             logger.info(
                                 f'The record is created, '
-                                f'the file {image} is saved'
+                                f'the file '
+                                f'{str(image).split("/")[-1]} is saved'
                             )
                     else:
                         logger.warning('This record(s) already exists')
         except Exception as e:
             logger.error(f'Error: {e}')
         else:
-            logger.info('Success...')
-
+            logger.info('Place added successfully')
 
     def add_arguments(self, parser):
         parser.add_argument('place', action='store')
