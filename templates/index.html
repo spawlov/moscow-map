@@ -39,27 +39,8 @@
       width: 100px;
     }
   </style>
-  <script id="places-geojson" type="application/json">
-    {
-      "type": "FeatureCollection",
-      "features": [
-      {% for place in places %}
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [{{ place.lng|sep_to_dot }}, {{ place.lat|sep_to_dot }}]
-          },
-          "properties": {
-            "title": "{{ place.title }}",
-            "placeId": "{{ place.id }}",
-            "detailsUrl": "{% url 'place-detail' place.id %}"
-          }
-        {% if forloop.last %}}{% else %}},{% endif %}
-        {% endfor %}
-      ]
-    }
-  </script>
+
+  {{ geo_json|json_script:"places-geojson" }}
 
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
