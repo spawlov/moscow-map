@@ -23,7 +23,7 @@ python manage.py migrate
 
 ```
 SECRET_KEY=<Здесь должен быть секретный ключ Django>
-
+DEBUG=<установить в False перед деплоем>
 ALLOWED_HOSTS=<Хост, на котором будет размещен проект>
 ```
 
