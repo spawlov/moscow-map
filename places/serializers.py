@@ -14,7 +14,7 @@ class CordSerializer(serializers.BaseSerializer, ABC):
 class ImageSerializer(serializers.BaseSerializer, ABC):
     """Serializer list of images for to places for imgs variable"""
     def to_representation(self, value):
-        return f'{str(value.file.url)}'
+        return f'{value.file.url}'
 
 
 class PlaceSerializer(serializers.ModelSerializer):
