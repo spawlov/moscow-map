@@ -32,12 +32,10 @@ class MapPage(generic.ListView):
                 }
             )
 
-        geo_json = [
-            {
-                "type": "FeatureCollection",
-                "features": features
-            }
-        ]
+        geo_json = {
+            "type": "FeatureCollection",
+            "features": features
+        }
 
         context['geo_json'] = geo_json
         return context
