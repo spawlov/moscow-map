@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.views import generic
 from rest_framework import viewsets
 
@@ -26,7 +27,7 @@ class MapPage(generic.ListView):
                     "properties": {
                         "title": place.title,
                         "placeId": place.id,
-                        "detailsUrl": f"/api/places/{place.id}/"
+                        "detailsUrl": reverse('place-detail', args=(place.id,))
                     }
                 }
             )
