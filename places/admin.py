@@ -1,7 +1,7 @@
 from adminsortable2.admin import SortableTabularInline, SortableAdminBase
 
 from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from .models import Place, Image
 
@@ -14,7 +14,7 @@ class PlaceInline(SortableTabularInline):
     extra = 1
 
     def get_preview(self, obj):
-        return format_html(f'<img src="{obj.file.url}" height="200">')
+        return mark_safe(f'<img src="{obj.file.url}" height="200">')
 
     get_preview.short_description = 'Предпросмотр'
 
