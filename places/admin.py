@@ -13,8 +13,8 @@ class PlaceInline(SortableTabularInline):
     fk_name = 'place'
     extra = 1
 
-    def get_preview(self, obj):
-        return mark_safe(f'<img src="{obj.file.url}" height="200">')
+    def get_preview(self, image):
+        return mark_safe(f'<img src="{image.file.url}" height="200">')
 
     get_preview.short_description = 'Предпросмотр'
 
