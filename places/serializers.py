@@ -7,14 +7,14 @@ from .models import Place
 
 class CordSerializer(serializers.BaseSerializer, ABC):
     """Serializer coordinates for to places for coordinates variable"""
-    def to_representation(self, value):
-        return {'lng': value.lng, 'lat': value.lat}
+    def to_representation(self, place):
+        return {'lng': place.lng, 'lat': place.lat}
 
 
 class ImageSerializer(serializers.BaseSerializer, ABC):
     """Serializer list of images for to places for imgs variable"""
-    def to_representation(self, value):
-        return f'{value.file.url}'
+    def to_representation(self, image):
+        return f'{image.file.url}'
 
 
 class PlaceSerializer(serializers.ModelSerializer):
