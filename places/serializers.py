@@ -19,7 +19,7 @@ class ImageSerializer(serializers.BaseSerializer, ABC):
 
 class PlaceSerializer(serializers.ModelSerializer):
     coordinates = CordSerializer(source='*')  # Cords place
-    imgs = ImageSerializer(source='img_places', many=True)  # Image list
+    imgs = ImageSerializer(source='images', many=True)  # Image list
 
     class Meta:
         model = Place
