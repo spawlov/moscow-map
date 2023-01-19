@@ -15,6 +15,7 @@ class PlaceInline(SortableTabularInline):
 
     def get_preview(self, obj):
         return format_html(f'<img src="{obj.file.url}" height="200">')
+
     get_preview.short_description = 'Предпросмотр'
 
 
