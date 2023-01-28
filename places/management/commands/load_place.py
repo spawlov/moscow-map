@@ -63,7 +63,9 @@ class Command(BaseCommand):
             return None, False, None
 
     @staticmethod
-    def saving_images(place, resp_json):
+    def saving_images(
+            place: add_or_update_place,
+            resp_json: add_or_update_place) -> None:
         """ We save the creations for the location """
         if not os.path.exists(settings.MEDIA_ROOT):
             os.makedirs(settings.MEDIA_ROOT)
