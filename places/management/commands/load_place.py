@@ -3,6 +3,8 @@ import shutil
 
 import requests
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.management import BaseCommand
 from loguru import logger
 
@@ -16,86 +18,87 @@ class Command(BaseCommand):
                       'Chrome/39.0.2171.95 Safari/537.36'
     }
 
-    def add_or_update_place(self, place_path: str) -> tuple:
+    def __init__(self):
+        super().__init__()
+        self.place_raw = {}
+
+    @property
+    def add_or_update_place(self) -> tuple:
         """
         Adding a location if there are no such coordinates
         or updating an existing one
         """
         try:
-            with requests.get(place_path, headers=self.headers) as resp:
-                if not resp.ok:
-                    logger.error(
-                        f'''Server response is: 
-                        {resp.url}::->::{resp.status_code}'''
-                    )
-                    return None, False, None
-            resp_json = resp.json()
-            logger.info('Server response is "OK"')
-            cords = resp_json.get('coordinates', None)
-            # Validate Coordinates
-            if not cords:
-                logger.error('Coordinates is empty')
-                return None, False, resp_json
-            elif any([not cords.get('lng', None), not cords.get('lat', None)]):
-                logger.error(f'Invalid coordinates')
-                return None, False, resp_json
-            # Validate Title
-            title = resp_json.get('title', None)
-            if not title:
-                logger.error('Title is empty')
-                return None, False, resp_json
+            title: str = self.place_raw['title']
+            lng: float = self.place_raw['coordinates']['lng']
+            lat: float = self.place_raw['coordinates']['lat']
+        except KeyError as e:
+            logger.error(f'Key {e} invalid')
+            return None, False
 
-            description_short = resp_json.get('description_short', None)
-            description_long = resp_json.get('description_long', None)
+        description_short = self.place_raw.get('description_short', '')
+        description_long = self.place_raw.get('description_long', '')
 
-            place, created = Place.objects.update_or_create(
-                lng=cords['lng'],
-                lat=cords['lat'],
-                defaults={
-                    'title': title,
-                    'description_short': description_short,
-                    'description_long': description_long,
-                },
+        place, created = Place.objects.update_or_create(
+            lng=lng,
+            lat=lat,
+            defaults={
+                'title': title,
+                'description_short': description_short,
+                'description_long': description_long,
+            },
+        )
+        if created:
+            logger.info(f'Location "{title}" saved')
+        else:
+            logger.info(f'Location "{title}" updated')
+        return place, created
+
+    def saving_images(self, place_id: int) -> None:
+        """Saving images for location"""
+        try:
+            images: list = self.place_raw['imgs']
+        except KeyError as e:
+            logger.error(f'Key {e} invalid')
+            return
+
+        for image in images:
+            if not os.path.exists(
+                    os.path.join(settings.MEDIA_ROOT, str(place_id))
+            ):
+                os.makedirs(os.path.join(settings.MEDIA_ROOT, str(place_id)))
+
+            image_name = image.split('/')[-1]
+            full_image_name = os.path.join(str(place_id), image_name)
+
+            image_content = ContentFile(
+                requests.get(image, stream=True).content, name=full_image_name
             )
-            return place, created, resp_json
-        except Exception as e:
-            logger.error(e)
-            return None, False, None
+            image = Image()
+            image.place_id = place_id
+            image.file = image_content
+            image.save()
 
-    @staticmethod
-    def saving_images(
-            place: add_or_update_place,
-            resp_json: add_or_update_place) -> None:
-        """ We save the creations for the location """
-        if not os.path.exists(settings.MEDIA_ROOT):
-            os.makedirs(settings.MEDIA_ROOT)
-        # Saving files
-        for image in resp_json.get('imgs'):
-            file = requests.get(image, stream=True)
-            file_path = f'{settings.MEDIA_ROOT}/{str(image).split("/")[-1]}'
-            with open(file_path, 'wb') as f:
-                file.raw.decode_content = True
-                shutil.copyfileobj(file.raw, f)
-                images_qs, images_created = Image.objects.get_or_create(
-                    place_id=place.id,
-                    file=str(image).split('/')[-1]
-                )
-                if not images_created:
-                    logger.warning('This file(s) already exists')
-                logger.info(
-                    f'The file {str(image).split("/")[-1]} is saved'
-                )
+            logger.info(f'The file: "{full_image_name}" saved')
 
     def handle(self, *args, **options):
-        place, place_created, resp_json = self.add_or_update_place(
-            options['place']
-        )
-        if not place_created:
-            logger.info(
-                f'The location already exists, the record has been updated'
-            )
+        try:
+            with requests.get(
+                    options['place'], headers=self.headers
+            ) as response:
+                if not response.ok:
+                    logger.error(
+                        f'''Server response is: 
+                        {response.url}::->::{response.status_code}'''
+                    )
+        except Exception as e:
+            logger.error(e)
         else:
-            self.saving_images(place, resp_json)
+            self.place_raw = response.json()
+            logger.info('Server response is "OK"')
+            place, place_created = self.add_or_update_place
+            if place_created:
+                self.saving_images(place.id)
 
     def add_arguments(self, parser):
         parser.add_argument('place', action='store')
