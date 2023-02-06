@@ -1,7 +1,4 @@
-import os
-
 import requests
-from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.management import BaseCommand
 from loguru import logger
