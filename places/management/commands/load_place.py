@@ -20,7 +20,6 @@ class Command(BaseCommand):
         super().__init__()
         self.place_raw = {}
 
-    @property
     def add_or_update_place(self) -> tuple:
         """
         Adding a location if there are no such coordinates
@@ -61,23 +60,16 @@ class Command(BaseCommand):
             return
 
         for image in images:
-            if not os.path.exists(
-                    os.path.join(settings.MEDIA_ROOT, str(place_id))
-            ):
-                os.makedirs(os.path.join(settings.MEDIA_ROOT, str(place_id)))
-
             image_name = image.split('/')[-1]
-            full_image_name = os.path.join(str(place_id), image_name)
-
             image_content = ContentFile(
-                requests.get(image, stream=True).content, name=full_image_name
+                requests.get(image, stream=True).content, name=image_name
             )
-            image = Image()
-            image.place_id = place_id
-            image.file = image_content
-            image.save()
-
-            logger.info(f'The file: "{full_image_name}" saved')
+            image, created = Image.objects.get_or_create(
+                place_id=place_id,
+                file=image_content
+            )
+            if created:
+                logger.info(f'The file: "{image.file.name}" saved')
 
     def handle(self, *args, **options):
         try:
@@ -94,7 +86,7 @@ class Command(BaseCommand):
         else:
             self.place_raw = response.json()
             logger.info('Server response is "OK"')
-            place, place_created = self.add_or_update_place
+            place, place_created = self.add_or_update_place()
             if place_created:
                 self.saving_images(place.id)
 

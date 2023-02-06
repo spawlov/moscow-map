@@ -1,6 +1,12 @@
+import os
+
 from django_ckeditor_5.fields import CKEditor5Field
 
 from django.db import models
+
+
+def get_uploading_path(instance, filename):
+    return os.path.join(str(instance.place.id), filename)
 
 
 class Place(models.Model):
@@ -32,7 +38,7 @@ class Image(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Локация',
     )
-    file = models.ImageField(verbose_name='Файл')
+    file = models.ImageField(upload_to=get_uploading_path, verbose_name='Файл')
     position = models.PositiveIntegerField(
         default=0,
         verbose_name='Позиция',
