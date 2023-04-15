@@ -4,6 +4,8 @@
 
 #### Демо-версия доступна по <a target="_blank" href="http://spavlov.pythonanywhere.com/map/">ссылке</a>
 
+<img src="moscow_map.png">
+
 ### Как установить
 
 Python3 должен быть уже установлен. 
