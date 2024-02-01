@@ -2,7 +2,7 @@
 
 ## Учебный проект на онлайн-курсе DevMan
 
-#### Демо-версия доступна по <a target="_blank" href="https://map.s-pavlov.pu">ссылке</a>
+#### Демо-версия доступна по <a target="_blank" href="https://map.s-pavlov.ru">ссылке</a>
 
 <img src="moscow_map.png">
 
