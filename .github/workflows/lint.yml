@@ -1,4 +1,4 @@
-name: ScienceNews Lint
+name: MoscowMap Lint
 
 on:
   push:
