@@ -5,15 +5,16 @@ import places.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('places', '0002_alter_image_place'),
+        ("places", "0002_alter_image_place"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='file',
-            field=models.ImageField(upload_to=places.models.get_uploading_path, verbose_name='Файл'),
+            model_name="image",
+            name="file",
+            field=models.ImageField(
+                upload_to=places.models.get_uploading_path, verbose_name="Файл"
+            ),
         ),
     ]

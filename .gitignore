@@ -5,3 +5,4 @@ venv/
 db.sqlite3
 /assets/places/
 /static/
+/.pre-commit-config.yaml

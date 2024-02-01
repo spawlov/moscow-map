@@ -6,40 +6,73 @@ import django_ckeditor_5.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Place',
+            name="Place",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=128, verbose_name='Название')),
-                ('description_short', models.TextField(blank=True, verbose_name='Краткое описание')),
-                ('description_long', django_ckeditor_5.fields.CKEditor5Field(blank=True, verbose_name='Полное описание')),
-                ('lng', models.FloatField(verbose_name='Долгота')),
-                ('lat', models.FloatField(verbose_name='Широта')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=128, verbose_name="Название")),
+                (
+                    "description_short",
+                    models.TextField(blank=True, verbose_name="Краткое описание"),
+                ),
+                (
+                    "description_long",
+                    django_ckeditor_5.fields.CKEditor5Field(
+                        blank=True, verbose_name="Полное описание"
+                    ),
+                ),
+                ("lng", models.FloatField(verbose_name="Долгота")),
+                ("lat", models.FloatField(verbose_name="Широта")),
             ],
             options={
-                'verbose_name': 'Локация',
-                'verbose_name_plural': 'Локации',
+                "verbose_name": "Локация",
+                "verbose_name_plural": "Локации",
             },
         ),
         migrations.CreateModel(
-            name='Image',
+            name="Image",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.ImageField(upload_to='', verbose_name='Файл')),
-                ('position', models.PositiveIntegerField(default=0, verbose_name='Позиция')),
-                ('place', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='img_place', to='places.place', verbose_name='Локация')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.ImageField(upload_to="", verbose_name="Файл")),
+                (
+                    "position",
+                    models.PositiveIntegerField(default=0, verbose_name="Позиция"),
+                ),
+                (
+                    "place",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="img_place",
+                        to="places.place",
+                        verbose_name="Локация",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Изображение',
-                'verbose_name_plural': 'Изображения',
-                'ordering': ['position'],
+                "verbose_name": "Изображение",
+                "verbose_name_plural": "Изображения",
+                "ordering": ["position"],
             },
         ),
     ]
