@@ -2,7 +2,7 @@
 
 ## Учебный проект на онлайн-курсе DevMan
 
-#### Демо-версия доступна по <a target="_blank" href="http://spavlov.pythonanywhere.com/map/">ссылке</a>
+#### Демо-версия доступна по <a target="_blank" href="https://map.s-pavlov.pu">ссылке</a>
 
 <img src="moscow_map.png">
 
